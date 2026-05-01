@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestión de Inscripciones Posgrado</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Inscripciones de Posgrado</h1>
+    <nav>
+      <a href="{{ url_for('dashboard') }}">Panel</a>
+      <a href="{{ url_for('nueva_inscripcion') }}">Nueva inscripción</a>
+    </nav>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
