@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="cards">
+  <div class="card"><h3>Pendiente</h3><p>{{ resumen['Pendiente'] }}</p></div>
+  <div class="card"><h3>En revisión</h3><p>{{ resumen['En revisión'] }}</p></div>
+  <div class="card"><h3>Aprobada</h3><p>{{ resumen['Aprobada'] }}</p></div>
+  <div class="card"><h3>Rechazada</h3><p>{{ resumen['Rechazada'] }}</p></div>
+</section>
+
+<section>
+  <h2>Listado de inscripciones</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th><th>Nombre</th><th>DNI</th><th>Email</th><th>Carrera</th><th>Estado</th><th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for i in inscripciones %}
+        <tr>
+          <td>{{ i.codigo_publico }}</td>
+          <td>{{ i.nombre }}</td>
+          <td>{{ i.dni }}</td>
+          <td>{{ i.email }}</td>
+          <td>{{ i.carrera.nombre }}</td>
+          <td><span class="badge">{{ i.estado }}</span></td>
+          <td><a href="{{ url_for('detalle', inscripcion_id=i.id) }}">Ver detalle</a></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7">No hay inscripciones registradas.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
