@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Alta de nueva inscripción</h2>
+<form method="post" class="form-grid">
+  <label>Nombre completo <input name="nombre" required></label>
+  <label>DNI <input name="dni" required></label>
+  <label>Email <input type="email" name="email" required></label>
+  <label>Teléfono <input name="telefono" required></label>
+  <label>Nacionalidad <input name="nacionalidad" required></label>
+  <label>Carrera
+    <select name="carrera_id" required>
+      {% for c in carreras %}<option value="{{ c.id }}">{{ c.nombre }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Estado inicial
+    <select name="estado">
+      {% for estado in estados %}<option value="{{ estado }}">{{ estado }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Observaciones
+    <textarea name="observaciones" rows="4" placeholder="Comentarios adicionales"></textarea>
+  </label>
+  <button type="submit">Guardar inscripción</button>
+</form>
+{% endblock %}
