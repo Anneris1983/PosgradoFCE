@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inscripciones Posgrado FCE</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">GitHub Pages + Apps Script + Sheets + Drive + Gmail</p>
+      <h1>Gestión de inscripciones a carreras de posgrado</h1>
+      <p>Web visible en GitHub Pages para registrar postulantes, subir documentación, consultar inscripciones y actualizar estados usando Apps Script como motor.</p>
+    </div>
+    <a class="button button-light" href="#nueva-inscripcion">Nueva inscripción</a>
+  </header>
+
+  <main class="container">
+    <section class="config-panel" aria-labelledby="config-title">
+      <div>
+        <h2 id="config-title">Conexión con Apps Script</h2>
+        <p>Pegá la URL del despliegue web de Apps Script para conectar GitHub Pages con Google Sheets, Google Drive y Gmail.</p>
+      </div>
+      <form id="config-form" class="config-form">
+        <input id="api-url" type="url" placeholder="https://script.google.com/macros/s/.../exec" required>
+        <button type="submit">Guardar URL</button>
+      </form>
+      <p id="connection-status" class="status-message">Sin URL configurada.</p>
+    </section>
+
+    <section class="cards" aria-label="Resumen de inscripciones">
+      <article class="card"><span>Pendiente</span><strong id="count-pendiente">0</strong></article>
+      <article class="card"><span>En revisión</span><strong id="count-revision">0</strong></article>
+      <article class="card"><span>Aprobada</span><strong id="count-aprobada">0</strong></article>
+      <article class="card"><span>Rechazada</span><strong id="count-rechazada">0</strong></article>
+    </section>
+
+    <section id="nueva-inscripcion" class="panel" aria-labelledby="form-title">
+      <h2 id="form-title">Alta de nueva inscripción</h2>
+      <form id="inscription-form" class="form-grid">
+        <label>Nombre completo
+          <input name="nombre" required>
+        </label>
+        <label>DNI / Pasaporte
+          <input name="dni" required>
+        </label>
+        <label>Email
+          <input name="email" type="email" required>
+        </label>
+        <label>Teléfono
+          <input name="telefono" required>
+        </label>
+        <label>Nacionalidad
+          <input name="nacionalidad" required>
+        </label>
+        <label>Carrera
+          <select id="carrera-select" name="carrera" required></select>
+        </label>
+        <label class="full-width">Observaciones
+          <textarea name="observaciones" rows="4" placeholder="Documentación pendiente, comentarios o notas internas"></textarea>
+        </label>
+        <fieldset class="full-width upload-fieldset">
+          <legend>Documentación digital</legend>
+          <p>Los archivos se envían a Apps Script y se guardan en Google Drive.</p>
+          <label>DNI / Pasaporte
+            <input name="docIdentidad" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </label>
+          <label>Partida de nacimiento
+            <input name="docPartida" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </label>
+          <label>Título / Diploma
+            <input name="docTitulo" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </label>
+          <label>Analítico de egreso
+            <input name="docAnalitico" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </label>
+          <label>Traducción legal / apostilla (si corresponde)
+            <input name="docTraduccion" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </label>
+        </fieldset>
+        <button type="submit">Guardar inscripción y documentos</button>
+      </form>
+      <p id="form-message" class="status-message"></p>
+    </section>
+
+    <section class="panel" aria-labelledby="list-title">
+      <div class="section-heading">
+        <h2 id="list-title">Listado de inscripciones</h2>
+        <button id="refresh-button" type="button">Actualizar listado</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Postulante</th>
+              <th>DNI/Pasaporte</th>
+              <th>Contacto</th>
+              <th>Carrera</th>
+              <th>Estado</th>
+              <th>Documentación</th>
+              <th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody id="inscriptions-body">
+            <tr><td colspan="8">Configurá la URL de Apps Script para cargar datos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
