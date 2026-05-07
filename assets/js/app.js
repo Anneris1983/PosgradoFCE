@@ -42,57 +42,32 @@ window.PosgradoApp = (() => {
       ui.fillCareers(data.carreras);
     } catch (error) {
       ui.fillCareers(config.CARRERAS_FALLBACK);
+      ui.setFormMessage('No se pudieron cargar las carreras desde el sistema. Puede completar el formulario igual y reintentar.', 'error');
     }
-  }
-
-  async function loadInscriptions() {
-    try {
-      const data = await api.listInscriptions();
-      ui.renderCounts(data.inscripciones);
-      ui.renderRows(data.inscripciones, updateStatus);
-      ui.setConnectionStatus('Conectado a Apps Script, Google Sheets, Drive y Gmail.', 'success');
-    } catch (error) {
-      ui.setConnectionStatus(error.message, 'error');
-    }
-  }
-
-  async function updateStatus(codigoPublico, estado) {
-    await api.updateStatus(codigoPublico, estado);
-    await loadInscriptions();
-  }
-
-  async function handleConfigSubmit(event) {
-    event.preventDefault();
-    api.saveConfiguredUrl(ui.elements.apiInput.value);
-    await loadCareers();
-    await loadInscriptions();
   }
 
   async function handleInscriptionSubmit(event) {
     event.preventDefault();
-    ui.setFormMessage('Guardando inscripción y documentación...');
+    ui.setFormMessage('Enviando inscripción. Espere unos segundos...');
+
     try {
       const payload = getInscriptionPayload(ui.elements.inscriptionForm);
       const archivos = await collectFiles(ui.elements.inscriptionForm);
       const data = await api.createInscription(payload, archivos);
       ui.elements.inscriptionForm.reset();
-      ui.setFormMessage(`Inscripción guardada con código ${data.codigoPublico}.`, 'success');
-      await loadInscriptions();
+      ui.showSuccess(data);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
-      ui.setFormMessage(error.message, 'error');
+      ui.setFormMessage(error.message || 'No se pudo enviar la inscripción. Intente nuevamente.', 'error');
     }
   }
 
   function init() {
-    ui.elements.apiInput.value = api.getConfiguredUrl();
     ui.fillCareers(config.CARRERAS_FALLBACK);
-    ui.elements.configForm.addEventListener('submit', handleConfigSubmit);
-    ui.elements.inscriptionForm.addEventListener('submit', handleInscriptionSubmit);
-    ui.elements.refreshButton.addEventListener('click', loadInscriptions);
+    loadCareers();
 
-    if (ui.elements.apiInput.value) {
-      loadCareers();
-      loadInscriptions();
+    if (ui.elements.inscriptionForm) {
+      ui.elements.inscriptionForm.addEventListener('submit', handleInscriptionSubmit);
     }
   }
 
