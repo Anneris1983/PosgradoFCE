@@ -11,7 +11,7 @@
     <div>
       <p class="eyebrow">Facultad de Ciencias Económicas · UNCUYO</p>
       <h1>Inscripción a carreras de posgrado</h1>
-      <p>Complete sus datos para iniciar su postulación. Puede subir la documentación ahora o continuar luego desde el enlace que recibirá por correo electrónico.</p>
+      <p>Complete el formulario para iniciar su inscripción. Puede cargar la documentación ahora o continuar luego desde el enlace que recibirá por correo electrónico.</p>
     </div>
     <a class="button button-light" href="#formulario-inscripcion">Iniciar inscripción</a>
   </header>
@@ -19,24 +19,54 @@
   <main class="container public-container">
     <section class="notice-panel" aria-label="Información importante">
       <h2>Antes de comenzar</h2>
-      <p>La inscripción puede iniciarse aunque todavía no tenga toda la documentación. En ese caso quedará como <strong>pendiente</strong> y recibirá un enlace personal para volver a completarla.</p>
+      <p>La inscripción puede iniciarse aunque todavía no tenga toda la documentación. Si falta algún archivo, quedará como <strong>pendiente</strong> y podrá volver a completarla desde el enlace enviado por correo electrónico.</p>
       <ul>
         <li>Puede cargar archivos PDF, JPG o PNG.</li>
         <li>Documentación para argentinos: DNI, partida de nacimiento, título/diploma y analítico de egreso.</li>
-        <li>Documentación para extranjeros: pasaporte, partida, título y analítico con Apostilla de La Haya. Si no están en español, deben incluir traducción legal.</li>
+        <li>Documentación para extranjeros: pasaporte, partida, título y analítico con Apostilla de La Haya. Si no están en español, la traducción legal debe estar incluida dentro del PDF correspondiente.</li>
       </ul>
     </section>
 
     <section id="formulario-inscripcion" class="panel" aria-labelledby="form-title">
       <h2 id="form-title">Formulario de inscripción</h2>
-      <p class="section-help">Los campos obligatorios permiten iniciar la inscripción. La documentación puede cargarse ahora o completarse después.</p>
+      <p class="section-help">Los datos solicitados corresponden al formulario/base original de inscripción. Los campos marcados con * son necesarios para iniciar el trámite.</p>
 
       <form id="inscription-form" class="form-grid">
-        <label class="full-width">Carrera a la que desea inscribirse *
+        <label class="full-width">Carrera a la cual solicita la inscripción *
           <select id="carrera-select" name="carrera" required>
             <option value="">Cargando carreras...</option>
           </select>
         </label>
+
+        <h3 class="form-section-title full-width">Datos de contacto</h3>
+        <label>Dirección de correo electrónico *
+          <input name="email" type="email" autocomplete="email" required>
+        </label>
+        <label>Número de celular *
+          <input name="telefono" autocomplete="tel" required>
+        </label>
+
+        <h3 class="form-section-title full-width">Documentación digital</h3>
+        <fieldset class="full-width upload-fieldset">
+          <legend>Archivos de inscripción</legend>
+          <p>Puede subir los cuatro archivos ahora o completar la documentación más adelante desde el enlace que recibirá por correo.</p>
+          <label>DNI / Pasaporte / C.I. / C.C. / Otro
+            <small>Vista del DNI frente y dorso, Pasaporte, CI, CC u otro documento en un único archivo PDF o imagen.</small>
+            <input name="docIdentidad" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </label>
+          <label>Partida de nacimiento
+            <small>Archivo PDF o imagen legible y completa de la partida de nacimiento.</small>
+            <input name="docPartida" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </label>
+          <label>Título base / Diploma
+            <small>Archivo PDF o imagen legible y completa del diploma de la carrera de grado.</small>
+            <input name="docTitulo" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </label>
+          <label>Certificado analítico de egreso
+            <small>Archivo PDF o imagen legible y completa del certificado analítico de egreso.</small>
+            <input name="docAnalitico" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </label>
+        </fieldset>
 
         <h3 class="form-section-title full-width">Datos personales</h3>
         <label>Apellido/s *
@@ -45,65 +75,174 @@
         <label>Nombre/s *
           <input name="nombre" autocomplete="given-name" required>
         </label>
-        <label>Tipo de documento
-          <select name="tipo_documento">
-            <option value="DNI">DNI</option>
-            <option value="Pasaporte">Pasaporte</option>
-            <option value="Cédula de identidad">Cédula de identidad</option>
-            <option value="Otro">Otro</option>
+        <label>Género
+          <select name="genero">
+            <option value="">Seleccione una opción</option>
+            <option>Femenino</option>
+            <option>Masculino</option>
+            <option>No binario</option>
+            <option>Prefiero no responder</option>
+            <option>Otro</option>
           </select>
-        </label>
-        <label>Número de documento / pasaporte *
-          <input name="dni" required>
-        </label>
-        <label>Nacionalidad *
-          <input name="nacionalidad" required>
         </label>
         <label>Fecha de nacimiento
           <input name="fecha_nacimiento" type="date">
         </label>
-
-        <h3 class="form-section-title full-width">Datos de contacto</h3>
-        <label>Correo electrónico *
-          <input name="email" type="email" autocomplete="email" required>
+        <label>Nacionalidad *
+          <input name="nacionalidad" required>
         </label>
-        <label>Número de celular *
-          <input name="telefono" autocomplete="tel" required>
+        <label>¿Pertenece a algún pueblo originario?
+          <select name="pueblo_originario">
+            <option value="">Seleccione una opción</option>
+            <option>Sí</option>
+            <option>No</option>
+          </select>
+        </label>
+        <label>Documento de identidad (tipo)
+          <select name="tipo_documento">
+            <option value="">Seleccione una opción</option>
+            <option>Documento Nacional de Identidad</option>
+            <option>Pasaporte</option>
+            <option>Cédula de identidad</option>
+            <option>Cédula de ciudadanía</option>
+            <option>Otro</option>
+          </select>
+        </label>
+        <label>Documento de identidad (número) *
+          <input name="dni" required>
+        </label>
+        <label>CUIL
+          <input name="cuil">
+        </label>
+        <label>Estado civil
+          <select name="estado_civil">
+            <option value="">Seleccione una opción</option>
+            <option>Soltero/a</option>
+            <option>Casado/a</option>
+            <option>Divorciado/a</option>
+            <option>Viudo/a</option>
+            <option>Unión convivencial</option>
+            <option>Otro</option>
+          </select>
+        </label>
+        <label>Cantidad de hijos
+          <input name="cantidad_hijos" type="number" min="0">
+        </label>
+        <label>Cantidad de familiares a cargo
+          <input name="familiares_a_cargo" type="number" min="0">
+        </label>
+        <label>Su padre vive
+          <select name="padre_vive">
+            <option value="">Seleccione una opción</option>
+            <option>Sí</option>
+            <option>No</option>
+          </select>
+        </label>
+        <label>Su madre vive
+          <select name="madre_vive">
+            <option value="">Seleccione una opción</option>
+            <option>Sí</option>
+            <option>No</option>
+          </select>
         </label>
 
-        <h3 class="form-section-title full-width">Datos académicos y laborales</h3>
+        <h3 class="form-section-title full-width">Domicilio y vivienda</h3>
+        <label>Calle
+          <input name="calle">
+        </label>
+        <label>Número
+          <input name="numero_calle">
+        </label>
+        <label>Piso / Departamento / Barrio
+          <input name="piso_departamento_barrio">
+        </label>
+        <label>Localidad, provincia
+          <input name="localidad_provincia">
+        </label>
+        <label>Código postal
+          <input name="codigo_postal">
+        </label>
+        <label>¿Con quién vive?
+          <input name="con_quien_vive">
+        </label>
+        <label>Tipo de vivienda
+          <input name="tipo_vivienda">
+        </label>
+
+        <h3 class="form-section-title full-width">Actividad laboral</h3>
+        <label>Condición de actividad durante la semana pasada
+          <input name="condicion_actividad">
+        </label>
+        <label>En ese trabajo es
+          <input name="en_ese_trabajo_es">
+        </label>
+        <label>Esa ocupación es
+          <input name="esa_ocupacion_es">
+        </label>
+        <label>Horas semanales
+          <input name="horas_semanales">
+        </label>
+        <label class="full-width">Organización donde trabaja
+          <input name="organizacion_trabaja">
+        </label>
+
+        <h3 class="form-section-title full-width">Salud, accesibilidad y conectividad</h3>
+        <label>Posee cobertura de salud
+          <input name="cobertura_salud">
+        </label>
+        <label>Condición de discapacidad
+          <input name="condicion_discapacidad">
+        </label>
+        <label>¿Tiene CUD?
+          <select name="tiene_cud">
+            <option value="">Seleccione una opción</option>
+            <option>Sí</option>
+            <option>No</option>
+          </select>
+        </label>
+        <label>Si declaró alguna discapacidad, indique cuál
+          <input name="discapacidad_detalle">
+        </label>
+        <label>¿Posee alguna limitación alimentaria?
+          <input name="limitacion_alimentaria" placeholder="Celiaquía, intolerancias, alergias, etc.">
+        </label>
+        <label>Dispones de PC
+          <input name="dispone_pc">
+        </label>
+        <label>Accedes a Internet
+          <input name="acceso_internet">
+        </label>
+
+        <h3 class="form-section-title full-width">Idiomas</h3>
+        <label>Inglés
+          <input name="idioma_ingles">
+        </label>
+        <label>Alemán
+          <input name="idioma_aleman">
+        </label>
+        <label>Francés
+          <input name="idioma_frances">
+        </label>
+        <label>Italiano
+          <input name="idioma_italiano">
+        </label>
+        <label>Portugués
+          <input name="idioma_portugues">
+        </label>
+        <label>Chino
+          <input name="idioma_chino">
+        </label>
+        <label class="full-width">Otro idioma
+          <input name="idioma_otro">
+        </label>
+
+        <h3 class="form-section-title full-width">Datos académicos</h3>
         <label>Título de grado
           <input name="titulo_grado">
         </label>
         <label>Universidad de egreso
           <input name="universidad_egreso">
         </label>
-        <label>Condición laboral
-          <input name="condicion_laboral" placeholder="Ej.: empleado/a, independiente, desempleado/a">
-        </label>
-        <label>Organización donde trabaja
-          <input name="organizacion_laboral">
-        </label>
-
-        <fieldset class="full-width upload-fieldset">
-          <legend>Documentación digital</legend>
-          <p>No es obligatorio cargar todos los archivos en este momento. Si falta documentación, recibirá un enlace para continuar luego.</p>
-          <label>DNI / Pasaporte
-            <input name="docIdentidad" type="file" accept=".pdf,.jpg,.jpeg,.png">
-          </label>
-          <label>Partida de nacimiento
-            <input name="docPartida" type="file" accept=".pdf,.jpg,.jpeg,.png">
-          </label>
-          <label>Título / Diploma
-            <input name="docTitulo" type="file" accept=".pdf,.jpg,.jpeg,.png">
-          </label>
-          <label>Analítico de egreso
-            <input name="docAnalitico" type="file" accept=".pdf,.jpg,.jpeg,.png">
-          </label>
-          <label>Traducción legal / apostilla, si corresponde
-            <input name="docTraduccion" type="file" accept=".pdf,.jpg,.jpeg,.png">
-          </label>
-        </fieldset>
 
         <label class="full-width">Observaciones
           <textarea name="observaciones" rows="4" placeholder="Agregue aquí cualquier aclaración que considere necesaria."></textarea>
