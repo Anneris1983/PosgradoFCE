@@ -1,7 +1,6 @@
 window.POSGRADO_CONFIG = {
-  // Pegá acá la URL /exec del despliegue Web App de Google Apps Script.
-  // Ejemplo: https://script.google.com/macros/s/AKfycb.../exec
-  APPS_SCRIPT_URL: '',
+  // URL /exec del despliegue Web App de Google Apps Script.
+  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwX-4lLVFNl2A3qerDZNEr32cJjeLQ2nGOPqXLkgq9P645U-JvaIzIeqarBA9DxLH4n/exec',
   STORAGE_KEY: 'posgrado_apps_script_url',
   ESTADOS: ['Pendiente', 'En revisión', 'Aprobada', 'Rechazada'],
   FILE_FIELDS: ['docIdentidad', 'docPartida', 'docTitulo', 'docAnalitico', 'docTraduccion'],
