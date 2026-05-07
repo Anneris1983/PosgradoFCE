@@ -3,7 +3,7 @@ window.POSGRADO_CONFIG = {
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwX-4lLVFNl2A3qerDZNEr32cJjeLQ2nGOPqXLkgq9P645U-JvaIzIeqarBA9DxLH4n/exec',
   STORAGE_KEY: 'posgrado_apps_script_url',
   ESTADOS: ['Pendiente', 'En revisión', 'Aprobada', 'Rechazada'],
-  FILE_FIELDS: ['docIdentidad', 'docPartida', 'docTitulo', 'docAnalitico', 'docTraduccion'],
+  FILE_FIELDS: ['docIdentidad', 'docPartida', 'docTitulo', 'docAnalitico'],
   CARRERAS_FALLBACK: [
     'Doctorado en Ciencias Económicas',
     'Maestría en Administración de Negocios (MBA)',
