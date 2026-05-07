@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel interno · Posgrado FCE</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="admin-page">
+  <header class="hero admin-hero">
+    <div>
+      <p class="eyebrow">Uso interno · Secretaría / Coordinación</p>
+      <h1>Panel de gestión de inscripciones</h1>
+      <p>Listado administrativo para revisar postulantes, documentación y estados. Esta página no debe compartirse como formulario público.</p>
+    </div>
+    <a class="button button-light" href="index.html">Ver formulario público</a>
+  </header>
+
+  <main class="container">
+    <section class="cards" aria-label="Resumen de inscripciones">
+      <article class="card"><span>Pendiente</span><strong id="count-pendiente">0</strong></article>
+      <article class="card"><span>En revisión</span><strong id="count-revision">0</strong></article>
+      <article class="card"><span>Aprobada</span><strong id="count-aprobada">0</strong></article>
+      <article class="card"><span>Rechazada</span><strong id="count-rechazada">0</strong></article>
+    </section>
+
+    <section class="panel" aria-labelledby="list-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="list-title">Listado de inscripciones</h2>
+          <p class="section-help">Los datos se leen desde Google Sheets mediante Apps Script.</p>
+        </div>
+        <button id="refresh-button" type="button">Actualizar listado</button>
+      </div>
+      <p id="connection-status" class="status-message">Cargando conexión...</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Postulante</th>
+              <th>DNI/Pasaporte</th>
+              <th>Contacto</th>
+              <th>Carrera</th>
+              <th>Estado</th>
+              <th>Documentación</th>
+              <th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody id="inscriptions-body">
+            <tr><td colspan="8">Cargando inscripciones...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
