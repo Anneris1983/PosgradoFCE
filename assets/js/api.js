@@ -20,6 +20,7 @@ window.PosgradoApi = (() => {
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ action, ...payload }),
     });
+
     const data = await response.json();
     if (!data.ok) {
       throw new Error(data.error || 'No se pudo completar la operación.');
@@ -34,6 +35,9 @@ window.PosgradoApi = (() => {
     listCareers: () => call('listCareers'),
     listInscriptions: () => call('listInscriptions'),
     createInscription: (inscripcion, archivos) => call('createInscription', { inscripcion, archivos }),
-    updateStatus: (codigoPublico, estado) => call('updateStatus', { codigoPublico, estado }),
+    updateStatus: (codigoPublico, estado, motivoRechazo = '') => call('updateStatus', { codigoPublico, estado, motivoRechazo }),
+    updateDocumentStatus: (documentoId, estado, observacionRechazo = '') => call('updateDocumentStatus', { documentoId, estado, observacionRechazo }),
+    admitInscription: (inscripcionId) => call('admitInscription', { inscripcionId }),
+    rejectInscription: (inscripcionId, motivoRechazo) => call('rejectInscription', { inscripcionId, motivoRechazo }),
   };
 })();
