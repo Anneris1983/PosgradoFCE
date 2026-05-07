@@ -3,66 +3,91 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inscripciones Posgrado FCE</title>
+  <title>Inscripción a Posgrados FCE</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
-  <header class="hero">
+<body class="public-page">
+  <header class="hero public-hero">
     <div>
-      <p class="eyebrow">GitHub Pages + Apps Script + Sheets + Drive + Gmail</p>
-      <h1>Gestión de inscripciones a carreras de posgrado</h1>
-      <p>Web visible en GitHub Pages para registrar postulantes, subir documentación, consultar inscripciones y actualizar estados usando Apps Script como motor.</p>
+      <p class="eyebrow">Facultad de Ciencias Económicas · UNCUYO</p>
+      <h1>Inscripción a carreras de posgrado</h1>
+      <p>Complete sus datos para iniciar la inscripción. Puede subir la documentación ahora o continuar luego desde el enlace que recibirá por correo electrónico.</p>
     </div>
-    <a class="button button-light" href="#nueva-inscripcion">Nueva inscripción</a>
+    <a class="button button-light" href="#formulario-inscripcion">Iniciar inscripción</a>
   </header>
 
   <main class="container">
-    <section class="config-panel" aria-labelledby="config-title">
-      <div>
-        <h2 id="config-title">Conexión con Apps Script</h2>
-        <p>Pegá la URL del despliegue web de Apps Script para conectar GitHub Pages con Google Sheets, Google Drive y Gmail.</p>
-      </div>
-      <form id="config-form" class="config-form">
-        <input id="api-url" type="url" placeholder="https://script.google.com/macros/s/.../exec" required>
-        <button type="submit">Guardar URL</button>
-      </form>
-      <p id="connection-status" class="status-message">Sin URL configurada.</p>
+    <section class="notice-panel" aria-label="Información importante">
+      <h2>Antes de comenzar</h2>
+      <p>La inscripción puede quedar pendiente si todavía no cuenta con toda la documentación. Al enviar este formulario recibirá un enlace personal para volver a cargar archivos faltantes o consultar el estado de su postulación.</p>
+      <ul>
+        <li>Puede cargar archivos PDF, JPG o PNG.</li>
+        <li>Documentación argentina: DNI, partida de nacimiento, título/diploma y analítico de egreso.</li>
+        <li>Documentación extranjera: pasaporte, partida, título y analítico con Apostilla de La Haya. Si no está en español, debe incluir traducción legal.</li>
+      </ul>
     </section>
 
-    <section class="cards" aria-label="Resumen de inscripciones">
-      <article class="card"><span>Pendiente</span><strong id="count-pendiente">0</strong></article>
-      <article class="card"><span>En revisión</span><strong id="count-revision">0</strong></article>
-      <article class="card"><span>Aprobada</span><strong id="count-aprobada">0</strong></article>
-      <article class="card"><span>Rechazada</span><strong id="count-rechazada">0</strong></article>
-    </section>
+    <section id="formulario-inscripcion" class="panel" aria-labelledby="form-title">
+      <h2 id="form-title">Formulario de inscripción</h2>
+      <p class="section-help">Los campos marcados como obligatorios permiten iniciar la inscripción. La documentación puede cargarse ahora o completarse después.</p>
 
-    <section id="nueva-inscripcion" class="panel" aria-labelledby="form-title">
-      <h2 id="form-title">Alta de nueva inscripción</h2>
       <form id="inscription-form" class="form-grid">
-        <label>Nombre completo
-          <input name="nombre" required>
+        <label class="full-width">Carrera a la que desea inscribirse *
+          <select id="carrera-select" name="carrera" required>
+            <option value="">Cargando carreras...</option>
+          </select>
         </label>
-        <label>DNI / Pasaporte
+
+        <h3 class="form-section-title full-width">Datos personales</h3>
+        <label>Apellido/s *
+          <input name="apellido" autocomplete="family-name" required>
+        </label>
+        <label>Nombre/s *
+          <input name="nombre" autocomplete="given-name" required>
+        </label>
+        <label>Tipo de documento
+          <select name="tipo_documento">
+            <option value="DNI">DNI</option>
+            <option value="Pasaporte">Pasaporte</option>
+            <option value="Cédula de identidad">Cédula de identidad</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </label>
+        <label>Número de documento / pasaporte *
           <input name="dni" required>
         </label>
-        <label>Email
-          <input name="email" type="email" required>
-        </label>
-        <label>Teléfono
-          <input name="telefono" required>
-        </label>
-        <label>Nacionalidad
+        <label>Nacionalidad *
           <input name="nacionalidad" required>
         </label>
-        <label>Carrera
-          <select id="carrera-select" name="carrera" required></select>
+        <label>Fecha de nacimiento
+          <input name="fecha_nacimiento" type="date">
         </label>
-        <label class="full-width">Observaciones
-          <textarea name="observaciones" rows="4" placeholder="Documentación pendiente, comentarios o notas internas"></textarea>
+
+        <h3 class="form-section-title full-width">Datos de contacto</h3>
+        <label>Correo electrónico *
+          <input name="email" type="email" autocomplete="email" required>
         </label>
+        <label>Número de celular *
+          <input name="telefono" autocomplete="tel" required>
+        </label>
+
+        <h3 class="form-section-title full-width">Datos académicos y laborales</h3>
+        <label>Título de grado
+          <input name="titulo_grado">
+        </label>
+        <label>Universidad de egreso
+          <input name="universidad_egreso">
+        </label>
+        <label>Condición laboral
+          <input name="condicion_laboral" placeholder="Ej.: empleado/a, independiente, desempleado/a">
+        </label>
+        <label>Organización donde trabaja
+          <input name="organizacion_laboral">
+        </label>
+
         <fieldset class="full-width upload-fieldset">
           <legend>Documentación digital</legend>
-          <p>Los archivos se envían a Apps Script y se guardan en Google Drive.</p>
+          <p>No es obligatorio completar todos los archivos en este momento. Si falta documentación, la inscripción quedará pendiente y podrá continuar luego desde el enlace enviado por correo.</p>
           <label>DNI / Pasaporte
             <input name="docIdentidad" type="file" accept=".pdf,.jpg,.jpeg,.png">
           </label>
@@ -75,39 +100,18 @@
           <label>Analítico de egreso
             <input name="docAnalitico" type="file" accept=".pdf,.jpg,.jpeg,.png">
           </label>
-          <label>Traducción legal / apostilla (si corresponde)
+          <label>Traducción legal / apostilla, si corresponde
             <input name="docTraduccion" type="file" accept=".pdf,.jpg,.jpeg,.png">
           </label>
         </fieldset>
-        <button type="submit">Guardar inscripción y documentos</button>
+
+        <label class="full-width">Observaciones
+          <textarea name="observaciones" rows="4" placeholder="Agregue aquí cualquier aclaración que considere necesaria."></textarea>
+        </label>
+
+        <button type="submit">Enviar inscripción</button>
       </form>
       <p id="form-message" class="status-message"></p>
-    </section>
-
-    <section class="panel" aria-labelledby="list-title">
-      <div class="section-heading">
-        <h2 id="list-title">Listado de inscripciones</h2>
-        <button id="refresh-button" type="button">Actualizar listado</button>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Postulante</th>
-              <th>DNI/Pasaporte</th>
-              <th>Contacto</th>
-              <th>Carrera</th>
-              <th>Estado</th>
-              <th>Documentación</th>
-              <th>Observaciones</th>
-            </tr>
-          </thead>
-          <tbody id="inscriptions-body">
-            <tr><td colspan="8">Configurá la URL de Apps Script para cargar datos.</td></tr>
-          </tbody>
-        </table>
-      </div>
     </section>
   </main>
 
