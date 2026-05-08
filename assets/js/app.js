@@ -2,6 +2,25 @@ window.PosgradoApp = (() => {
   const config = window.POSGRADO_CONFIG;
   const api = window.PosgradoApi;
   const ui = window.PosgradoUi;
+  const PDF_MIME_TYPE = 'application/pdf';
+
+  function isPdfFile(file) {
+    const name = String(file?.name || '').toLowerCase();
+    return file?.type === PDF_MIME_TYPE || name.endsWith('.pdf');
+  }
+
+  function validatePdfOnly(form) {
+    for (const field of config.FILE_FIELDS) {
+      const input = form.elements[field];
+      if (input?.files?.length) {
+        const file = input.files[0];
+        if (!isPdfFile(file)) {
+          const label = input.closest('label')?.childNodes?.[0]?.textContent?.trim() || 'Documento';
+          throw new Error(`${label}: solo se permiten archivos PDF.`);
+        }
+      }
+    }
+  }
 
   function fileToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -14,6 +33,8 @@ window.PosgradoApp = (() => {
 
   async function collectFiles(form) {
     const files = [];
+    validatePdfOnly(form);
+
     for (const field of config.FILE_FIELDS) {
       const input = form.elements[field];
       if (input?.files?.length) {
@@ -21,7 +42,7 @@ window.PosgradoApp = (() => {
         files.push({
           campo: field,
           nombre: file.name,
-          mimeType: file.type || 'application/octet-stream',
+          mimeType: PDF_MIME_TYPE,
           contenidoBase64: await fileToBase64(file),
         });
       }
