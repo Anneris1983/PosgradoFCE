@@ -21,9 +21,11 @@ window.PosgradoAdmin = (() => {
 
   const params = new URLSearchParams(window.location.search);
   const carreraParam = params.get('carrera') || '';
+  const PAGE_SIZE = 20;
 
   let inscriptions = [];
   let selectedInscription = null;
+  let currentPage = 1;
 
   function setMessage(message, type = 'info') {
     if (!elements.message) return;
@@ -70,6 +72,50 @@ window.PosgradoAdmin = (() => {
     });
   }
 
+  function getPaginatedRows(rows) {
+    const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return { totalPages, start, rows: rows.slice(start, start + PAGE_SIZE) };
+  }
+
+  function ensurePaginationContainer() {
+    let container = document.querySelector('#pagination-controls');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'pagination-controls';
+      container.className = 'pagination-controls';
+      document.querySelector('.table-wrap')?.after(container);
+    }
+    return container;
+  }
+
+  function renderPagination(totalRows, totalPages) {
+    const container = ensurePaginationContainer();
+    if (totalRows <= PAGE_SIZE) {
+      container.innerHTML = '';
+      return;
+    }
+
+    const from = (currentPage - 1) * PAGE_SIZE + 1;
+    const to = Math.min(currentPage * PAGE_SIZE, totalRows);
+    container.innerHTML = `
+      <button type="button" class="small-button" id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button>
+      <span>Página ${currentPage} de ${totalPages} · Mostrando ${from}-${to} de ${totalRows}</span>
+      <button type="button" class="small-button" id="next-page" ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>
+    `;
+
+    container.querySelector('#prev-page')?.addEventListener('click', () => {
+      currentPage -= 1;
+      renderTable();
+    });
+    container.querySelector('#next-page')?.addEventListener('click', () => {
+      currentPage += 1;
+      renderTable();
+    });
+  }
+
   function parseDocuments(item) {
     try {
       return Array.isArray(item.documentacion) ? item.documentacion : JSON.parse(item.documentacion || '[]');
@@ -92,13 +138,7 @@ window.PosgradoAdmin = (() => {
 
   function renderCounts() {
     const visible = getVisibleInscriptions();
-    const counts = {
-      total: visible.length,
-      pendiente: 0,
-      revision: 0,
-      aprobada: 0,
-      rechazada: 0,
-    };
+    const counts = { total: visible.length, pendiente: 0, revision: 0, aprobada: 0, rechazada: 0 };
 
     visible.forEach((item) => {
       if (item.estado === 'Pendiente') counts.pendiente += 1;
@@ -120,11 +160,14 @@ window.PosgradoAdmin = (() => {
   }
 
   function renderTable() {
-    const rows = getFilteredInscriptions();
+    const filtered = getFilteredInscriptions();
+    const paginated = getPaginatedRows(filtered);
+    const rows = paginated.rows;
     elements.body.innerHTML = '';
 
     if (!rows.length) {
       elements.body.innerHTML = '<tr><td colspan="8">No hay inscripciones para mostrar.</td></tr>';
+      renderPagination(0, 1);
       return;
     }
 
@@ -146,13 +189,13 @@ window.PosgradoAdmin = (() => {
     elements.body.querySelectorAll('[data-review]').forEach((button) => {
       button.addEventListener('click', () => openReview(button.dataset.review));
     });
+
+    renderPagination(filtered.length, paginated.totalPages);
   }
 
   function renderDocuments(item) {
     const docs = parseDocuments(item);
-    if (!docs.length) {
-      return '<p>No hay documentos asociados a esta inscripción.</p>';
-    }
+    if (!docs.length) return '<p>No hay documentos asociados a esta inscripción.</p>';
 
     return `
       <div class="documents-list">
@@ -201,13 +244,8 @@ window.PosgradoAdmin = (() => {
       ${renderDocuments(selectedInscription)}
     `;
 
-    elements.dialogContent.querySelectorAll('[data-doc-approve]').forEach((button) => {
-      button.addEventListener('click', () => approveDocument(button.dataset.docApprove));
-    });
-    elements.dialogContent.querySelectorAll('[data-doc-reject]').forEach((button) => {
-      button.addEventListener('click', () => rejectDocument(button.dataset.docReject));
-    });
-
+    elements.dialogContent.querySelectorAll('[data-doc-approve]').forEach((button) => button.addEventListener('click', () => approveDocument(button.dataset.docApprove)));
+    elements.dialogContent.querySelectorAll('[data-doc-reject]').forEach((button) => button.addEventListener('click', () => rejectDocument(button.dataset.docReject)));
     elements.dialog.showModal();
   }
 
@@ -265,6 +303,11 @@ window.PosgradoAdmin = (() => {
     }
   }
 
+  function resetPaginationAndRender() {
+    currentPage = 1;
+    renderTable();
+  }
+
   function escapeHtml(value) {
     return String(value ?? '')
       .replaceAll('&', '&amp;')
@@ -276,8 +319,8 @@ window.PosgradoAdmin = (() => {
 
   function init() {
     elements.refreshButton.addEventListener('click', loadDashboard);
-    elements.searchInput.addEventListener('input', renderTable);
-    elements.statusFilter.addEventListener('change', renderTable);
+    elements.searchInput.addEventListener('input', resetPaginationAndRender);
+    elements.statusFilter.addEventListener('change', resetPaginationAndRender);
     elements.admitButton.addEventListener('click', admitSelected);
     elements.rejectButton.addEventListener('click', rejectSelected);
     loadDashboard();
