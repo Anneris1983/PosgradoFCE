@@ -19,6 +19,9 @@ window.PosgradoAdmin = (() => {
     countRechazada: document.querySelector('#count-rechazada'),
   };
 
+  const params = new URLSearchParams(window.location.search);
+  const carreraParam = params.get('carrera') || '';
+
   let inscriptions = [];
   let selectedInscription = null;
 
@@ -32,11 +35,23 @@ window.PosgradoAdmin = (() => {
     return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
+  function isVisibleByCareer(item) {
+    if (!carreraParam) return true;
+    const wanted = normalizeText(carreraParam);
+    const carrera = normalizeText(item.carrera || '');
+    const carreraId = normalizeText(item.carreraId || item.carrera_id || '');
+    return carrera.includes(wanted) || carreraId === wanted;
+  }
+
+  function getVisibleInscriptions() {
+    return inscriptions.filter(isVisibleByCareer);
+  }
+
   function getFilteredInscriptions() {
     const query = normalizeText(elements.searchInput?.value || '');
     const status = elements.statusFilter?.value || '';
 
-    return inscriptions.filter((item) => {
+    return getVisibleInscriptions().filter((item) => {
       const text = normalizeText([
         item.codigoPublico,
         item.inscripcionId,
@@ -67,23 +82,25 @@ window.PosgradoAdmin = (() => {
     const docs = parseDocuments(item);
     if (!docs.length) return 'Sin documentación registrada';
 
-    const uploaded = docs.filter((doc) => doc.file_url || doc.url || doc.fileId).length;
+    const required = docs.filter((doc) => doc.obligatorio !== 'CONDICIONAL');
+    const uploaded = required.filter((doc) => doc.file_url || doc.url || doc.fileId).length;
     const rejected = docs.filter((doc) => doc.estado_documento === 'RECHAZADO').length;
     const approved = docs.filter((doc) => doc.estado_documento === 'APROBADO').length;
 
-    return `${uploaded}/${docs.length} subidos · ${approved} aprobados · ${rejected} rechazados`;
+    return `${uploaded}/${required.length || docs.length} obligatorios · ${approved} aprobados · ${rejected} rechazados`;
   }
 
   function renderCounts() {
+    const visible = getVisibleInscriptions();
     const counts = {
-      total: inscriptions.length,
+      total: visible.length,
       pendiente: 0,
       revision: 0,
       aprobada: 0,
       rechazada: 0,
     };
 
-    inscriptions.forEach((item) => {
+    visible.forEach((item) => {
       if (item.estado === 'Pendiente') counts.pendiente += 1;
       if (item.estado === 'En revisión') counts.revision += 1;
       if (item.estado === 'Aprobada') counts.aprobada += 1;
@@ -240,7 +257,8 @@ window.PosgradoAdmin = (() => {
       inscriptions = data.inscripciones || [];
       renderCounts();
       renderTable();
-      setMessage(`Inscripciones cargadas: ${inscriptions.length}.`, 'success');
+      const mode = carreraParam ? `Modo coordinador: ${carreraParam}` : 'Modo Secretaría: todas las carreras';
+      setMessage(`${mode}. Inscripciones cargadas: ${getVisibleInscriptions().length}.`, 'success');
     } catch (error) {
       setMessage(error.message || 'No se pudo cargar el dashboard.', 'error');
       elements.body.innerHTML = '<tr><td colspan="8">Error al cargar inscripciones.</td></tr>';
