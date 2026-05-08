@@ -3,51 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Panel interno · Posgrado FCE</title>
+  <title>Dashboard de Admisiones - Posgrado FCE</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body class="admin-page">
   <header class="hero admin-hero">
     <div>
-      <p class="eyebrow">Uso interno · Secretaría / Coordinación</p>
-      <h1>Panel de gestión de inscripciones</h1>
-      <p>Listado administrativo para revisar postulantes, documentación y estados. Esta página no debe compartirse como formulario público.</p>
+      <p class="eyebrow">Panel interno · Secretaría / Coordinación</p>
+      <h1>Dashboard de admisiones</h1>
+      <p>Seguimiento de postulantes, documentación, carpetas de Drive y estado de admisión.</p>
     </div>
     <a class="button button-light" href="index.html">Ver formulario público</a>
   </header>
 
   <main class="container">
     <section class="cards" aria-label="Resumen de inscripciones">
-      <article class="card"><span>Pendiente</span><strong id="count-pendiente">0</strong></article>
+      <article class="card"><span>Total</span><strong id="count-total">0</strong></article>
+      <article class="card"><span>Pendientes</span><strong id="count-pendiente">0</strong></article>
       <article class="card"><span>En revisión</span><strong id="count-revision">0</strong></article>
-      <article class="card"><span>Aprobada</span><strong id="count-aprobada">0</strong></article>
-      <article class="card"><span>Rechazada</span><strong id="count-rechazada">0</strong></article>
+      <article class="card"><span>Admitidas</span><strong id="count-aprobada">0</strong></article>
+      <article class="card"><span>Rechazadas</span><strong id="count-rechazada">0</strong></article>
     </section>
 
-    <section class="panel" aria-labelledby="list-title">
+    <section class="panel">
       <div class="section-heading">
         <div>
-          <h2 id="list-title">Listado de inscripciones</h2>
-          <p class="section-help">Los datos se leen desde Google Sheets mediante Apps Script.</p>
+          <h2>Inscripciones recibidas</h2>
+          <p class="section-help">Filtrá por nombre, documento, correo, carrera o estado.</p>
         </div>
         <button id="refresh-button" type="button">Actualizar listado</button>
       </div>
-      <p id="connection-status" class="status-message">Cargando conexión...</p>
+
+      <div class="filters-grid">
+        <label>Buscar
+          <input id="search-input" type="search" placeholder="Apellido, nombre, DNI, email, carrera...">
+        </label>
+        <label>Estado
+          <select id="status-filter">
+            <option value="">Todos</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En revisión">En revisión</option>
+            <option value="Aprobada">Admitida</option>
+            <option value="Rechazada">Rechazada</option>
+          </select>
+        </label>
+      </div>
+
+      <p id="admin-message" class="status-message">Cargando inscripciones...</p>
+
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Código</th>
+              <th>ID</th>
               <th>Postulante</th>
-              <th>DNI/Pasaporte</th>
+              <th>Documento</th>
               <th>Contacto</th>
               <th>Carrera</th>
               <th>Estado</th>
               <th>Documentación</th>
-              <th>Observaciones</th>
+              <th>Acciones</th>
             </tr>
           </thead>
-          <tbody id="inscriptions-body">
+          <tbody id="admin-inscriptions-body">
             <tr><td colspan="8">Cargando inscripciones...</td></tr>
           </tbody>
         </table>
@@ -55,9 +73,20 @@
     </section>
   </main>
 
+  <dialog id="review-dialog" class="review-dialog">
+    <form method="dialog" class="dialog-card">
+      <button class="dialog-close" value="cancel" aria-label="Cerrar">×</button>
+      <h2 id="dialog-title">Revisión de inscripción</h2>
+      <div id="dialog-content"></div>
+      <menu class="dialog-actions">
+        <button id="dialog-admit-button" type="button">Admitir inscripción</button>
+        <button id="dialog-reject-button" type="button" class="danger-button">Rechazar inscripción</button>
+      </menu>
+    </form>
+  </dialog>
+
   <script src="assets/js/config.js"></script>
   <script src="assets/js/api.js"></script>
-  <script src="assets/js/ui.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/admin.js"></script>
 </body>
 </html>
